@@ -12,6 +12,7 @@ namespace Project_MatField.ViewModels
 {
     public class LibraryViewModel : ObservableObject
     {
+        // DbContext
         private Realm _dbContext = null!;
 
         // Essential Vars
