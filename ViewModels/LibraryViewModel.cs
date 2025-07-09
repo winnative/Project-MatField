@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Project_MatField.Models;
 using Realms;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -232,21 +234,17 @@ namespace Project_MatField.ViewModels
         }
         public void OnAddingBook()
         {
-            var newRandomCode = new Random()
-                .Next(10000, 99999)
-                .ToString();
+            var newRandomCode = BookesInDetail.Count + 1;
 
-            while (BookesInDetail.Any(x => x.Code == newRandomCode))
+            while (BookesInDetail.Any(x => x.Code == newRandomCode.ToString()))
             {
-                newRandomCode = new Random()
-                    .Next(1, 10001)
-                    .ToString();
+                newRandomCode += 1;
             }
 
             Book bookToAdd = new()
             {
                 ParentGroupId = _selectedGroup!.GroupId,
-                Code = newRandomCode
+                Code = newRandomCode.ToString()
             };
 
             _dbContext
@@ -323,6 +321,252 @@ namespace Project_MatField.ViewModels
         public bool CanExecuteDeletingBook()
         {
             return SelectedBookInDetailViewModel != null;
+        }
+
+        // DataGrid
+        public void DataGridLibrarySorting(object sender, DataGridColumnEventArgs e)
+        {
+            var tempList = new List<BookInDetailViewModel>();
+            if (e.Column.Tag is "شماره")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Code).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Code).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "عنوان کتاب")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Name).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Name).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if(e.Column.Tag is "نویسنده")
+            {
+
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Writer).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Writer).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "مترجم")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Translator).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Translator).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "ناشر")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Publisher).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Publisher).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "سال نشر")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.PublishYear).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.PublishYear).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "جلد")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Volume).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Volume).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "شماره قفسه")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Column).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Column).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "شماره طبقه")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Row).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Row).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+            else if (e.Column.Tag is "کتاب چندم (از چپ به راست)")
+            {
+                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+                {
+                    tempList = BookesInDetail.OrderBy(x => x.Point).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Ascending;
+                }
+                else
+                {
+                    tempList = BookesInDetail.OrderByDescending(x => x.Point).ToList();
+                    BookesInDetail.Clear();
+                    tempList.ForEach(x =>
+                    {
+                        BookesInDetail.Add(x);
+                    });
+                    e.Column.SortDirection = DataGridSortDirection.Descending;
+                }
+            }
+
+
+            foreach (var dgColumn in ((DataGrid)sender).Columns)
+            {
+                if (dgColumn.Tag.ToString() != e.Column.Tag.ToString())
+                {
+                    dgColumn.SortDirection = null;
+                }
+            }
         }
     }
 }

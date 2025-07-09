@@ -135,10 +135,13 @@
             <dataGrid:DataGrid
                 x:Name="dataGridLibrary"
                 AutoGenerateColumns="False"
+                CanUserReorderColumns="True"
+                CanUserSortColumns="True"
                 CornerRadius="8"
                 ItemsSource="{x:Bind LibraryViewModel.BookesInDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{x:Bind LibraryViewModel.SelectedBookInDetailViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionMode="Single">
+                SelectionMode="Single"
+                Sorting="{x:Bind LibraryViewModel.DataGridLibrarySorting}">
                 <interactivity:Interaction.Behaviors>
                     <interactivity:EventTriggerBehavior EventName="CellEditEnded">
                         <interactivity:InvokeCommandAction Command="{x:Bind LibraryViewModel.OnCellUpdatingCommand}" />
@@ -148,44 +151,56 @@
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextId"
                         Binding="{Binding Code, Mode=OneWay}"
+                        CanUserReorder="True"
+                        CanUserSort="True"
                         Header="شماره"
-                        IsReadOnly="True" />
+                        Tag="شماره" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextName"
                         Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="عنوان کتاب" />
+                        CanUserSort="True"
+                        Header="عنوان کتاب"
+                        Tag="عنوان کتاب" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextWriter"
                         Binding="{Binding Writer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="نویسنده" />
+                        Header="نویسنده"
+                        Tag="نویسنده" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextTranslator"
                         Binding="{Binding Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="مترجم" />
+                        Header="مترجم"
+                        Tag="مترجم" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextPublisher"
                         Binding="{Binding Publisher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="ناشر" />
+                        Header="ناشر"
+                        Tag="ناشر" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextPublishYear"
                         Binding="{Binding PublishYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="سال نشر" />
+                        Header="سال نشر"
+                        Tag="سال نشر" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextVolume"
                         Binding="{Binding Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="جلد" />
+                        Header="جلد"
+                        Tag="جلد"/>
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextColumn"
                         Binding="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="شماره قفسه" />
+                        Header="شماره قفسه"
+                        Tag="شماره قفسه"/>
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextRow"
                         Binding="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="شماره طبقه" />
+                        Header="شماره طبقه"
+                        Tag="شماره طبقه"/>
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextPoint"
                         Binding="{Binding Point, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="کتاب چندم (از چپ به راست)" />
+                        Header="کتاب چندم (از چپ به راست)"
+                        Tag="کتاب چندم (از چپ به راست)"/>
                 </dataGrid:DataGrid.Columns>
             </dataGrid:DataGrid>
             <StackPanel
