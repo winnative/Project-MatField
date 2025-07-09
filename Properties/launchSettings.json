@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Project-MatField (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Project-MatField (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
