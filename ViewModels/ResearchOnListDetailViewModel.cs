@@ -5,19 +5,46 @@ namespace Project_MatField.ViewModels
 {
     public class ResearchOnListDetailViewModel : ObservableObject
     {
-        public Research _research;
-        public ResearchOnListDetailViewModel(Research research)
+        public enum ResearchMode
         {
-            _research = research;
-            OnListLabel = research.Subject;
-            ResourceOnTooltip = research.Resources;
-            SummaryResearchOnTooltip = research.Text;
+            Research,
+            ResearchGroup
         }
 
-        public string OnListLabel { get; set; }
-        public string ResourceOnTooltip { get; set; }
-        public string SummaryResearchOnTooltip { get; set; }
-        public string ResourceHeaderOnTooltip { get { return "منابع"; } }
-        public string SummaryResearchHeaderOnTooltip { get { return "بخشی از متن"; } }
+        private string _id = null!;
+        private string _displayName = null!;
+        private ResearchMode _mode;
+
+        public ResearchOnListDetailViewModel(Research research)
+        {
+            _id = research.Id;
+            _displayName = research.Subject;
+            _mode = ResearchMode.Research;
+        }
+
+        public ResearchOnListDetailViewModel(ResearchGroup researchGroup)
+        {
+            _id = researchGroup.Id;
+            _displayName = researchGroup.Name;
+            _mode = ResearchMode.ResearchGroup;
+        }
+
+        public string Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
+
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetProperty(ref _displayName, value);
+        }
+
+        public ResearchMode Mode
+        {
+            get => _mode;
+            set => SetProperty(ref _mode, value);
+        }
     }
 }

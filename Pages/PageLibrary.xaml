@@ -153,8 +153,8 @@
                         Binding="{Binding Code, Mode=OneWay}"
                         CanUserReorder="True"
                         CanUserSort="True"
-                        IsReadOnly="True"
                         Header="شماره"
+                        IsReadOnly="True"
                         Tag="شماره" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextName"
