@@ -6,7 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Project_MatField.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:researchesVM="using:Project_MatField.ViewModels"
     mc:Ignorable="d">
+    <Page.DataContext>
+        <researchesVM:ResearchesViewModel x:Name="ResearchesViewModel" />
+    </Page.DataContext>
 
-    <Grid />
+    <Grid x:Name="gridRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="gridTreeView" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefault}" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefault}" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="56" />
+            </Grid.RowDefinitions>
+            <TreeView x:Name="treeViewResearches"/>
+            <CommandBar x:Name="commandBarTreeViewResearches" Grid.Row="1" VerticalAlignment="Center">
+                
+            </CommandBar>
+        </Grid>
+    </Grid>
 </Page>

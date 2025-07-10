@@ -13,7 +13,7 @@ namespace Project_MatField.ViewModels
 {
     public class ResearchesViewModel : ObservableObject
     {
-        private ResearchOnListDetailViewModel _selectedOnList;
+        private ResearchOnListDetailViewModel? _selectedOnList;
         public ResearchesViewModel() { InitializeViewModel(); }
         public ResearchesViewModel(params ResearchOnListDetailViewModel[] researchGroupsOnList)
         {
@@ -26,14 +26,14 @@ namespace Project_MatField.ViewModels
 
         public ObservableCollection<ResearchOnListDetailViewModel> ResearchGroupsOnList { get; set; } = [];
         public ObservableCollection<ResearchInDetailViewModel> ResearchesInDetail { get; set; } = [];
-        public ResearchOnListDetailViewModel SelectedOnList
+        public ResearchOnListDetailViewModel? SelectedOnList
         {
             get => _selectedOnList;
             set => SetProperty(ref _selectedOnList, value);
         }
 
-        public IRelayCommand OnFolderOrResearchCreatingCommand { get; set; }
-        public IRelayCommand OnFolderOrResearchDeletingCommand { get; set; }
+        public IRelayCommand OnFolderCreatingCommand { get; set; }
+        public IRelayCommand OnFolderDeletingCommand { get; set; }
         public IRelayCommand OnResearchCreatingCommand { get; set; }
         public IRelayCommand OnResearchDeletingCommand { get; set; }
 
@@ -44,16 +44,28 @@ namespace Project_MatField.ViewModels
 
         public void InitializeCommands()
         {
-            OnFolderOrResearchCreatingCommand = new RelayCommand(OnFolderOrResearchCreating);
-            OnFolderOrResearchDeletingCommand = new RelayCommand(OnFolderOrResearchDeleting);
+            OnFolderCreatingCommand = new RelayCommand(OnFolderCreating);
+            OnFolderDeletingCommand = new RelayCommand(OnFolderDeleting);
+            OnResearchCreatingCommand = new RelayCommand(OnResearchCreating);
+            OnResearchDeletingCommand = new RelayCommand(OnResearchDeleting);
         }
 
-        public void OnFolderOrResearchCreating()
+        public void OnFolderCreating()
         {
             
         }
 
-        public void OnFolderOrResearchDeleting()
+        public void OnFolderDeleting()
+        {
+
+        }
+
+        public void OnResearchCreating()
+        {
+
+        }
+
+        public void OnResearchDeleting()
         {
 
         }
