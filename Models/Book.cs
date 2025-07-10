@@ -15,7 +15,6 @@ namespace Project_MatField.Models
             int volume,
             int column,
             int row,
-            int point,
             string parentGroupId,
             string subject)
         {
@@ -45,7 +44,6 @@ namespace Project_MatField.Models
         public int Column { get; set; }
         public int Row { get; set; }
         public string ParentGroupId { get; set; } = null!;
-        public int Point { get; set; }
         public string Subject { get; set; } = null!;
     }
 }

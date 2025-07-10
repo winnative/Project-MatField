@@ -1,11 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Project_MatField.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project_MatField.ViewModels
 {
@@ -21,9 +15,9 @@ namespace Project_MatField.ViewModels
         private int _vol = 0;
         private int _col = 0;
         private int _row;
-        private int _pt;
         private string _subject = null!;
         private string _parentGroupId = null!;
+
         public BookInDetailViewModel() { }
         public BookInDetailViewModel(Book book)
         {
@@ -39,7 +33,6 @@ namespace Project_MatField.ViewModels
             _col = book.Column;
             _row = book.Row;
             _subject = book.Subject;
-            _pt = book.Point;
             _parentGroupId = book.ParentGroupId;
         }
 
@@ -105,12 +98,6 @@ namespace Project_MatField.ViewModels
             set => SetProperty(ref _row, value);
         }
 
-        public int Point
-        {
-            get => _pt;
-            set => SetProperty(ref _pt, value);
-        }
-
         public string Subject
         {
             get => _subject;
@@ -136,7 +123,6 @@ namespace Project_MatField.ViewModels
             model.Volume = Volume;
             model.Column = Column;
             model.Row = Row;
-            model.Point = Point;
             model.Subject = Subject;
             model.ParentGroupId = ParentGroupId;
 

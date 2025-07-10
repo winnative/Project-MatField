@@ -234,8 +234,7 @@ namespace Project_MatField.ViewModels
         }
         public void OnAddingBook()
         {
-            var newRandomCode = BookesInDetail.Count + 1;
-
+            var newRandomCode = _dbContext.All<Book>().Count() + 1;
             while (BookesInDetail.Any(x => x.Code == newRandomCode.ToString()))
             {
                 newRandomCode += 1;
@@ -323,7 +322,7 @@ namespace Project_MatField.ViewModels
             return SelectedBookInDetailViewModel != null;
         }
 
-        // DataGrid
+        // DataGrid Sorting Algorithm
         public void DataGridLibrarySorting(object sender, DataGridColumnEventArgs e)
         {
             var tempList = new List<BookInDetailViewModel>();
@@ -527,29 +526,6 @@ namespace Project_MatField.ViewModels
                 else
                 {
                     tempList = BookesInDetail.OrderByDescending(x => x.Row).ToList();
-                    BookesInDetail.Clear();
-                    tempList.ForEach(x =>
-                    {
-                        BookesInDetail.Add(x);
-                    });
-                    e.Column.SortDirection = DataGridSortDirection.Descending;
-                }
-            }
-            else if (e.Column.Tag is "کتاب چندم (از چپ به راست)")
-            {
-                if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
-                {
-                    tempList = BookesInDetail.OrderBy(x => x.Point).ToList();
-                    BookesInDetail.Clear();
-                    tempList.ForEach(x =>
-                    {
-                        BookesInDetail.Add(x);
-                    });
-                    e.Column.SortDirection = DataGridSortDirection.Ascending;
-                }
-                else
-                {
-                    tempList = BookesInDetail.OrderByDescending(x => x.Point).ToList();
                     BookesInDetail.Clear();
                     tempList.ForEach(x =>
                     {

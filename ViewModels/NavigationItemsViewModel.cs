@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Project_MatField.Pages;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace Project_MatField.ViewModels
 {
@@ -39,15 +40,15 @@ namespace Project_MatField.ViewModels
         {
             if (_view.SelectedItem == _view.MenuItems[0])
             {
-                AppFrame.Navigate(typeof(PageLibrary));
+                AppFrame.Navigate(typeof(PageLibrary), null, new SlideNavigationTransitionInfo());
             }
             else if (_view.SelectedItem == _view.MenuItems[1])
             {
-                AppFrame.Navigate(typeof(PageResearches));
+                AppFrame.Navigate(typeof(PageResearches), null, new SlideNavigationTransitionInfo());
             }
             else
             {
-                AppFrame.Navigate(typeof(PageSettings));
+                AppFrame.Navigate(typeof(PageSettings), null, new SlideNavigationTransitionInfo());
             }
         }
     }

@@ -153,6 +153,7 @@
                         Binding="{Binding Code, Mode=OneWay}"
                         CanUserReorder="True"
                         CanUserSort="True"
+                        IsReadOnly="True"
                         Header="شماره"
                         Tag="شماره" />
                     <dataGrid:DataGridTextColumn
@@ -185,22 +186,17 @@
                         x:Name="dataGridTextVolume"
                         Binding="{Binding Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Header="جلد"
-                        Tag="جلد"/>
+                        Tag="جلد" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextColumn"
                         Binding="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Header="شماره قفسه"
-                        Tag="شماره قفسه"/>
+                        Tag="شماره قفسه" />
                     <dataGrid:DataGridTextColumn
                         x:Name="dataGridTextRow"
                         Binding="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Header="شماره طبقه"
-                        Tag="شماره طبقه"/>
-                    <dataGrid:DataGridTextColumn
-                        x:Name="dataGridTextPoint"
-                        Binding="{Binding Point, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Header="کتاب چندم (از چپ به راست)"
-                        Tag="کتاب چندم (از چپ به راست)"/>
+                        Tag="شماره طبقه" />
                 </dataGrid:DataGrid.Columns>
             </dataGrid:DataGrid>
             <StackPanel
