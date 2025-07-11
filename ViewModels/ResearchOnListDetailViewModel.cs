@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Project_MatField.Models;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Project_MatField.ViewModels
 {
@@ -46,5 +48,7 @@ namespace Project_MatField.ViewModels
             get => _mode;
             set => SetProperty(ref _mode, value);
         }
+
+        public ObservableCollection<ResearchOnListDetailViewModel> Children { get; set; } = null!;
     }
 }

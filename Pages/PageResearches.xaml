@@ -7,6 +7,7 @@
     xmlns:local="using:Project_MatField.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:researchesVM="using:Project_MatField.ViewModels"
+    xmlns:sizers="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.DataContext>
         <researchesVM:ResearchesViewModel x:Name="ResearchesViewModel" />
@@ -15,17 +16,64 @@
     <Grid x:Name="gridRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Grid x:Name="gridTreeView" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefault}" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefault}" Grid.Column="0">
+        <Grid
+            x:Name="gridTreeView"
+            Grid.Column="0"
+            Margin="16,16,0,16"
+            Background="{ThemeResource CardBackgroundFillColorDefault}"
+            BorderBrush="{ThemeResource CardStrokeColorDefault}"
+            BorderThickness="1"
+            CornerRadius="12">
             <Grid.RowDefinitions>
                 <RowDefinition />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="56" />
             </Grid.RowDefinitions>
-            <TreeView x:Name="treeViewResearches"/>
-            <CommandBar x:Name="commandBarTreeViewResearches" Grid.Row="1" VerticalAlignment="Center">
-                
+            <TreeView x:Name="treeViewResearches" />
+            <MenuFlyoutSeparator Grid.Row="1" />
+            <CommandBar
+                x:Name="commandBarTreeViewResearches"
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                DefaultLabelPosition="Collapsed">
+                <AppBarButton x:Name="appBarButtonCreateResearch" Icon="Add" />
+                <AppBarButton x:Name="appBarButtonCreateResearchFolder">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE82E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="appBarButtonDelete" Icon="Delete" />
             </CommandBar>
         </Grid>
+        <sizers:GridSplitter
+            Grid.Column="1"
+            Margin="0,16"
+            CornerRadius="4" />
+        <ScrollViewer
+            x:Name="scrollViewerContent"
+            Grid.Column="2"
+            Margin="0,16,16,16">
+            <StackPanel x:Name="stackPanelContent" Spacing="8">
+                <TextBox x:Name="textBoxSubject" Header="موضوع تحقیق" />
+                <TextBox
+                    x:Name="textBoxResources"
+                    MinHeight="100"
+                    Header="منابع"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    x:Name="textBoxComment"
+                    MinHeight="100"
+                    Header="نظر محقق"
+                    TextWrapping="Wrap" />
+                <RichEditBox
+                    x:Name="richEditBoxResearchText"
+                    MinHeight="800"
+                    Header="تحقیق"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

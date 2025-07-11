@@ -24,8 +24,6 @@ namespace Project_MatField
 {
     public partial class App : Application
     {
-        private Window? _window;
-        public Realm _dbContext = null!;
         public IServiceProvider _serviceProvider;
         public App()
         {
@@ -38,12 +36,12 @@ namespace Project_MatField
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            InitializeMainWindow(out _window);
+            InitializeMainWindow();
         }
 
-        private void InitializeMainWindow(out Window window)
+        private void InitializeMainWindow()
         {
-            window = _serviceProvider.GetService<MainWindow>()!;
+            var window = _serviceProvider.GetService<MainWindow>()!;
             window.ExtendsContentIntoTitleBar = true;
             window.AppWindow.TitleBar.PreferredHeightOption = Microsoft.UI.Windowing.TitleBarHeightOption.Tall;
             window.ResizeAndMove(1000, 700);
