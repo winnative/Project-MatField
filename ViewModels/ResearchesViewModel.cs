@@ -21,6 +21,7 @@ namespace Project_MatField.ViewModels
         private Realm _dbContext = null!;
 
         private ResearchOnListDetailViewModel? _selectedOnList;
+        private ResearchInDetailViewModel _selectedResearchInDetail = null!;
         private string _addingGroupName = null!;
 
         public ResearchesViewModel() { InitializeViewModel(); }
@@ -42,8 +43,7 @@ namespace Project_MatField.ViewModels
             {
                 SetProperty(ref _selectedOnList, value);
                 OnResearchCreatingCommand.NotifyCanExecuteChanged();
-                OnResearchDeletingCommand.NotifyCanExecuteChanged();
-                OnFolderDeletingCommand.NotifyCanExecuteChanged();
+                OnEntityDeletingCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -53,10 +53,15 @@ namespace Project_MatField.ViewModels
             set => SetProperty(ref _addingGroupName, value);
         }
 
+        public ResearchInDetailViewModel SelectedResearchInDetail
+        {
+            get => _selectedResearchInDetail;
+            set => SetProperty(ref _selectedResearchInDetail, value);
+        }
+
         public IRelayCommand OnFolderCreatingCommand { get; set; } = null!;
-        public IRelayCommand OnFolderDeletingCommand { get; set; } = null!;
+        public IRelayCommand OnEntityDeletingCommand { get; set; } = null!;
         public IRelayCommand OnResearchCreatingCommand { get; set; } = null!;
-        public IRelayCommand OnResearchDeletingCommand { get; set; } = null!;
 
         private void InitializeViewModel()
         {
@@ -67,9 +72,8 @@ namespace Project_MatField.ViewModels
         private void InitializeCommands()
         {
             OnFolderCreatingCommand = new RelayCommand(OnFolderCreating);
-            OnFolderDeletingCommand = new RelayCommand(OnFolderDeleting);
+            OnEntityDeletingCommand = new RelayCommand(OnEntityDeleting);
             OnResearchCreatingCommand = new RelayCommand(OnResearchCreating);
-            OnResearchDeletingCommand = new RelayCommand(OnResearchDeleting);
         }
 
         private void GetDbContextInstance() => 
@@ -84,7 +88,16 @@ namespace Project_MatField.ViewModels
             ResearchEntitiesOnList.Add(newGroupNode);
         }
 
-        public async void OnFolderDeleting()
+        public void OnResearchCreating()
+        {
+            _dbContext.Write(() =>
+            {
+                _dbContext
+                .Add(SelectedResearchInDetail.ToModel(), true);
+            });
+        }
+
+        public async void OnEntityDeleting()
         {
             if (SelectedOnList!.Mode is ResearchOnListDetailViewModel.ResearchMode.Research)
             {
@@ -99,7 +112,7 @@ namespace Project_MatField.ViewModels
                 contentDialogAskForFolderDeleting.Title = "حذف پوشه؟";
                 contentDialogAskForFolderDeleting.Content = "با حذف پوشه تمامی تحقیقات مربوط به آن نیز حذف خواهد شد.";
                 contentDialogAskForFolderDeleting.CloseButtonText = "انصراف";
-                contentDialogAskForFolderDeleting.PrimaryButtonText = "حذف پوشه";
+                contentDialogAskForFolderDeleting.PrimaryButtonText = "حذف";
                 contentDialogAskForFolderDeleting.XamlRoot = ((Application.Current as App)!._serviceProvider.GetService<MainWindow>())!.Content.XamlRoot;
                 if (await contentDialogAskForFolderDeleting.ShowAsync() == ContentDialogResult.Primary)
                 {
@@ -111,18 +124,15 @@ namespace Project_MatField.ViewModels
                         .Where(x => x.ParentGroupId == SelectedOnList.Id)
                         .ToList();
 
+                    _dbContext.Remove(researchGroupToDelete!);
+                    researchesToDelete.ForEach(res =>
+                    {
+                        _dbContext.Remove(res);
+                    });
+                    ResearchEntitiesOnList.Remove(SelectedOnList);
+                    SelectedOnList = null;
                 }
             }
-        }
-
-        public void OnResearchCreating()
-        {
-
-        }
-
-        public void OnResearchDeleting()
-        {
-
         }
     }
 }

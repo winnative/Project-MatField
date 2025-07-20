@@ -12,6 +12,7 @@ namespace Project_MatField.ViewModels
         private string _subject = null!;
         private string _resources = null!;
         private string _comment = null!;
+        private string _text = null!;
         private IList<string> _attachedFileLinks = [];
         private string _parentGroupId = null!;
 
@@ -22,6 +23,7 @@ namespace Project_MatField.ViewModels
             _subject = research.Subject;
             _resources = research.Resources;
             _comment = research.Comment;
+            _text = research.Text;
             _attachedFileLinks = research.AttachedFileLinks;
             _parentGroupId = research.ParentGroupId;
         }
@@ -50,6 +52,12 @@ namespace Project_MatField.ViewModels
             set => SetProperty(ref _comment, value);
         }
 
+        public string Text
+        {
+            get => _text;
+            set => SetProperty(ref _text, value);
+        }
+
         public ObservableCollection<AttachFileOnListViewModel> AttachFiles
         {
             get
@@ -75,6 +83,18 @@ namespace Project_MatField.ViewModels
         {
             get => _parentGroupId;
             set => SetProperty(ref _parentGroupId, value);
+        }
+
+        public Research ToModel()
+        {
+            var research = new Research();
+            research.Id = Id;
+            research.Subject = Subject;
+            research.Comment = Comment;
+            research.ParentGroupId = ParentGroupId;
+            research.Text = Text;
+            research.AttachedFileLinks = AttachFiles.Select(x => x.ToAttachFileModel()).ToList();
+            return research;
         }
     }
 }

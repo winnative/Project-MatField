@@ -39,5 +39,10 @@ namespace Project_MatField.ViewModels
         public string Name { get; set; } = null!;
         public FileIcon FileTypeIcon { get; set; } = FileIcon.Unknown;
         public string FileTypeIconGlyph { get; set; } = null!;
+
+        public string ToAttachFileModel()
+        {
+            return FileName;
+        }
     }
 }
