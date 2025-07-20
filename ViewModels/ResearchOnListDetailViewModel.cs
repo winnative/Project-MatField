@@ -16,6 +16,7 @@ namespace Project_MatField.ViewModels
         private string _id = null!;
         private string _displayName = null!;
         private ResearchMode _mode;
+        private ObservableCollection<ResearchOnListDetailViewModel> _children = null!;
 
         public ResearchOnListDetailViewModel(Research research)
         {
@@ -49,6 +50,10 @@ namespace Project_MatField.ViewModels
             set => SetProperty(ref _mode, value);
         }
 
-        public ObservableCollection<ResearchOnListDetailViewModel> Children { get; set; } = null!;
+        public ObservableCollection<ResearchOnListDetailViewModel> Children
+        {
+            get => _children;
+            set => SetProperty(ref _children, value);
+        }
     }
 }
