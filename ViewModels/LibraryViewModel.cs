@@ -9,11 +9,26 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Project_MatField.ViewModels
 {
     public class LibraryViewModel : ObservableObject
     {
+        public enum SearchBasedOnMode
+        {
+            Code,
+            Name,
+            Writer,
+            Translator,
+            Publisher,
+            PublishYear,
+            Volume,
+            Column,
+            Row,
+            Point
+        }
+
         // DbContext
         private Realm _dbContext = null!;
 
@@ -22,6 +37,9 @@ namespace Project_MatField.ViewModels
         private BookInDetailViewModel? _selectedBookInDetailViewModel = null;
         private string _addingGroupName = null!;
         private string _groupNameAddingErrorText = null!;
+        private string _searchText = null!;
+        private SearchBasedOnMode _selectedSearchFilterBasedOnMode;
+        private string _searchBaseText = null!;
 
 
         // Validation Error Events
@@ -80,6 +98,31 @@ namespace Project_MatField.ViewModels
             }
         }
 
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                SetProperty(ref _searchText, value);
+                OnSearchingCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        public string SearchBaseText
+        {
+            get => _searchBaseText;
+            set
+            {
+                SetProperty(ref _searchBaseText, value);
+            }
+        }
+
+        public SearchBasedOnMode SelectedSearchFilterBasedOnMode
+        {
+            get => _selectedSearchFilterBasedOnMode;
+            set => SetProperty(ref _selectedSearchFilterBasedOnMode, value);
+        }
+
         public BookInDetailViewModel? SelectedBookInDetailViewModel
         {
             get => _selectedBookInDetailViewModel;
@@ -109,6 +152,8 @@ namespace Project_MatField.ViewModels
         public IRelayCommand OnAddingBookCommand { get; set; } = null!;
         public IRelayCommand OnDeletingBookCommand { get; set; } = null!;
         public IRelayCommand OnCellUpdatingCommand { get; set; } = null!;
+        public IRelayCommand OnSearchingCommand { get; set; } = null!;
+        public IRelayCommand OnSearchFilterBaseChangingCommand { get; set; } = null!;
         
 
         // Initializers
@@ -135,6 +180,8 @@ namespace Project_MatField.ViewModels
             OnAddingBookCommand = new RelayCommand(OnAddingBook, CanExecuteBasedOnGroupSelecting);
             OnDeletingBookCommand = new RelayCommand(OnDeletingBook, CanExecuteDeletingBook);
             OnCellUpdatingCommand = new RelayCommand(OnCellUpdating);
+            OnSearchingCommand = new RelayCommand(OnSearching);
+            OnSearchFilterBaseChangingCommand = new RelayCommand(OnFilterBaseChanged);
         }
 
 
@@ -154,7 +201,7 @@ namespace Project_MatField.ViewModels
             foreach (var book in bookInfo!) { BookGroupsOnList.Add(book); }
         }
 
-        public void FilterByGroupId(string groupId)
+        public void FilterBooksByGroupId(string groupId)
         {
             BookesInDetail
                 .Clear();
@@ -186,12 +233,118 @@ namespace Project_MatField.ViewModels
             foreach (var book in bookInfo!) { BookesInDetail.Add(book); }
         }
 
+        public void FilterBooksBySearch(SearchBasedOnMode searchBase)
+        {
+            BookesInDetail.Clear();
+
+            var bookData = _dbContext
+                .All<Book>()
+                .ToList();
+            List<BookInDetailViewModel>? bookInfo = [];
+
+            switch (searchBase)
+            {
+                case SearchBasedOnMode.Code:
+                    bookInfo = bookData!
+                        .Where(x => x.Code.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Name:
+                    bookInfo = bookData!
+                        .Where(x => x.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Writer:
+                    bookInfo = bookData!
+                        .Where(x => x.Writer.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Translator:
+                    bookInfo = bookData!
+                        .Where(x => x.Translator.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Publisher:
+                    bookInfo = bookData!
+                        .Where(x => x.Publisher.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.PublishYear:
+                    bookInfo = bookData!
+                        .Where(x => x.PublishYear.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Volume:
+                    bookInfo = bookData!
+                        .Where(x => x.Volume.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Column:
+                    bookInfo = bookData!
+                        .Where(x => x.Column.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+                case SearchBasedOnMode.Row:
+                    bookInfo = bookData!
+                        .Where(x => x.Row.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+                        .Select(x => new BookInDetailViewModel(x))
+                        .ToList();
+                    break;
+            }
+            foreach (var book in bookInfo!) { BookesInDetail.Add(book); }
+        }
+
         // Command execute methods
+
+        public void OnFilterBaseChanged()
+        {
+            SelectedSearchFilterBasedOnMode = SearchBaseText switch
+            {
+                "شماره" => SearchBasedOnMode.Code,
+                "نام کتاب" => SearchBasedOnMode.Name,
+                "نویسنده" => SearchBasedOnMode.Writer,
+                "مترجم" => SearchBasedOnMode.Translator,
+                "ناشر" => SearchBasedOnMode.Publisher,
+                "سال نشر" => SearchBasedOnMode.PublishYear,
+                "جلد" => SearchBasedOnMode.Volume,
+                "شماره قفسه" => SearchBasedOnMode.Column,
+                "شماره ردیف" => SearchBasedOnMode.Row,
+                _ => SearchBasedOnMode.Name
+            };
+        }
+
+        public void OnSearching()
+        {
+            if (SearchText == string.Empty)
+            {
+                if (SelectedGroup is not null)
+                {
+                    FilterBooksByGroupId(SelectedGroup.GroupId);
+                }
+                else
+                {
+                    ShowAllBooks();
+                }
+            }
+            else
+            {
+                FilterBooksBySearch(SelectedSearchFilterBasedOnMode);
+            }
+        }
+
         public void OnGroupSelected()
         {
             if (SelectedGroup != null)
             {
-                FilterByGroupId(SelectedGroup!.GroupId);
+                FilterBooksByGroupId(SelectedGroup!.GroupId);
             }
         }
 
@@ -243,7 +396,12 @@ namespace Project_MatField.ViewModels
             {
                 ParentGroupId = _selectedGroup!.GroupId,
                 Code = newRandomCode
-                .ToString()
+                .ToString(),
+                Name = "ندارد",
+                Writer = "ندارد",
+                Translator = "ندارد",
+                Publisher = "ندارد",
+                Subject = "ندارد"
             };
 
             _dbContext.Write(() =>

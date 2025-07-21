@@ -135,6 +135,7 @@
             <dataGrid:DataGrid
                 x:Name="dataGridLibrary"
                 AutoGenerateColumns="False"
+                Background="Transparent"
                 CanUserReorderColumns="True"
                 CanUserSortColumns="True"
                 CornerRadius="8"
@@ -199,12 +200,19 @@
                         Tag="شماره طبقه" />
                 </dataGrid:DataGrid.Columns>
             </dataGrid:DataGrid>
-            <StackPanel
+            <Grid
                 Grid.Row="1"
                 Padding="4"
                 Background="{ThemeResource CardBackgroundFillColorDefault}"
                 BorderBrush="{ThemeResource CardStrokeColorDefault}"
-                BorderThickness="0,1,0,0">
+                BorderThickness="0,1,0,0"
+                ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
                 <CommandBar
                     x:Name="commandBarDataGridLibrary"
                     VerticalAlignment="Center"
@@ -220,7 +228,42 @@
                         CornerRadius="8"
                         Icon="Delete" />
                 </CommandBar>
-            </StackPanel>
+                <AppBarSeparator Grid.Column="1" />
+                <ComboBox
+                    Name="comboBoxSearchFilterBase"
+                    Grid.Column="2"
+                    Width="100"
+                    VerticalAlignment="Center"
+                    SelectedItem="{x:Bind LibraryViewModel.SearchBaseText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <x:String>شماره</x:String>
+                    <x:String>نام کتاب</x:String>
+                    <x:String>نویسنده</x:String>
+                    <x:String>مترجم</x:String>
+                    <x:String>ناشر</x:String>
+                    <x:String>سال نشر</x:String>
+                    <x:String>جلد</x:String>
+                    <x:String>شماره قفسه</x:String>
+                    <x:String>شماره ردیف</x:String>
+                    <interactivity:Interaction.Behaviors>
+                        <interactivity:EventTriggerBehavior EventName="SelectionChanged">
+                            <interactivity:InvokeCommandAction Command="{x:Bind LibraryViewModel.OnSearchFilterBaseChangingCommand}" />
+                        </interactivity:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </ComboBox>
+                <TextBox
+                    Name="textBoxSearchFilterText"
+                    Grid.Column="3"
+                    Width="300"
+                    VerticalAlignment="Center"
+                    PlaceholderText="جستجو کنید..."
+                    Text="{x:Bind LibraryViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <interactivity:Interaction.Behaviors>
+                        <interactivity:EventTriggerBehavior EventName="TextChanged">
+                            <interactivity:InvokeCommandAction Command="{x:Bind LibraryViewModel.OnSearchingCommand}" />
+                        </interactivity:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
