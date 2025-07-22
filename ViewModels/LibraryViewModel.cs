@@ -48,10 +48,7 @@ namespace Project_MatField.ViewModels
 
 
         // Class Constructors
-        public LibraryViewModel()
-        {
-            InitializeModelView();
-        }
+        public LibraryViewModel() => InitializeModelView();
 
         public LibraryViewModel(BookGroupOnListDetailViewModel[] bookGroupsOnList,
             BookInDetailViewModel[] bookesInDetail)
@@ -165,11 +162,9 @@ namespace Project_MatField.ViewModels
             InitializeCommands();
         }
 
-        private void InitializeDbContext()
-        {
+        private void InitializeDbContext() =>
             _dbContext = (Application.Current as App)?._serviceProvider
                 .GetService<Realm>()!;
-        }
 
         private void InitializeCommands()
         {
@@ -387,7 +382,8 @@ namespace Project_MatField.ViewModels
                 .All<Book>()
                 .Count() + 1;
 
-            while (BookesInDetail.Any(x => x.Code == newRandomCode.ToString()))
+            while (BookesInDetail
+                .Any(x => x.Code == newRandomCode.ToString()))
             {
                 newRandomCode += 1;
             }
