@@ -40,9 +40,9 @@
                 <NavigationViewItem
                     x:Name="navViewItemLibrary"
                     Content="کتابخانه"
-                    IsSelected="True"
                     CornerRadius="8"
-                    Icon="Library" />
+                    Icon="Library"
+                    IsSelected="True" />
                 <NavigationViewItem
                     x:Name="navViewItemResearches"
                     Content="تحقیقات"
