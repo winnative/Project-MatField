@@ -90,6 +90,7 @@ namespace Project_MatField.ViewModels
             var research = new Research();
             research.Id = Id;
             research.Subject = Subject;
+            research.Resources = Resources;
             research.Comment = Comment;
             research.ParentGroupId = ParentGroupId;
             research.Text = Text;

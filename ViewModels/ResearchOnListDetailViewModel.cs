@@ -16,7 +16,7 @@ namespace Project_MatField.ViewModels
         private string _id = null!;
         private string _displayName = null!;
         private ResearchMode _mode;
-        private ObservableCollection<ResearchOnListDetailViewModel> _children = null!;
+        private ObservableCollection<ResearchOnListDetailViewModel> _children = [];
 
         public ResearchOnListDetailViewModel(Research research)
         {

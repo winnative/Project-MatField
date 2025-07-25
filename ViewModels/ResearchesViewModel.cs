@@ -6,13 +6,8 @@ using Microsoft.UI.Xaml.Controls;
 using Project_MatField.Models;
 using Realms;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Media.Core;
 
 namespace Project_MatField.ViewModels;
 
@@ -21,10 +16,10 @@ public class ResearchesViewModel : ObservableObject
     private Realm _dbContext = null!;
 
     private ResearchOnListDetailViewModel? _selectedOnList;
-    private ResearchInDetailViewModel _selectedResearchInDetail = null!;
+    private ResearchInDetailViewModel? _selectedResearchInDetail;
     private string _addingGroupName = null!;
 
-    public ResearchesViewModel() { InitializeViewModel(); }
+    public ResearchesViewModel() => InitializeViewModel();
     public ResearchesViewModel(params ResearchOnListDetailViewModel[] researchGroupsOnList)
     {
         foreach (var researchGroup in researchGroupsOnList)
@@ -44,6 +39,8 @@ public class ResearchesViewModel : ObservableObject
             SetProperty(ref _selectedOnList, value);
             OnResearchCreatingCommand.NotifyCanExecuteChanged();
             OnEntityDeletingCommand.NotifyCanExecuteChanged();
+            InitializeSelectedResearchInDetailBasedOnId();
+            OnSaveChangingCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -53,48 +50,93 @@ public class ResearchesViewModel : ObservableObject
         set => SetProperty(ref _addingGroupName, value);
     }
 
-    public ResearchInDetailViewModel SelectedResearchInDetail
+    public ResearchInDetailViewModel? SelectedResearchInDetail
     {
         get => _selectedResearchInDetail;
         set => SetProperty(ref _selectedResearchInDetail, value);
-    }
+    }     
 
     public IRelayCommand OnFolderCreatingCommand { get; set; } = null!;
     public IRelayCommand OnEntityDeletingCommand { get; set; } = null!;
     public IRelayCommand OnResearchCreatingCommand { get; set; } = null!;
+    public IRelayCommand OnSaveChangingCommand { get; set; } = null!;
 
     private void InitializeViewModel()
     {
         GetDbContextInstance();
         InitializeCommands();
+        InitializeTreeView();
     }
 
     private void InitializeCommands()
     {
         OnFolderCreatingCommand = new RelayCommand(OnFolderCreating);
-        OnEntityDeletingCommand = new RelayCommand(OnEntityDeleting);
-        OnResearchCreatingCommand = new RelayCommand(OnResearchCreating);
+        OnEntityDeletingCommand = new RelayCommand(OnEntityDeleting, CanExecuteOnEntityDeleting);
+        OnResearchCreatingCommand = new RelayCommand(OnResearchCreating, CanExecuteOnResearchCreating);
+        OnSaveChangingCommand = new RelayCommand(OnSaveChanging, CanExecuteOnSaveChanging);
+    }
+
+    private void InitializeTreeView()
+    {
+        var researchGroups = _dbContext
+            .All<ResearchGroup>()
+            .ToList();
+
+        var researches = _dbContext
+            .All<Research>()
+            .ToList();
+
+        researchGroups.ForEach(rg =>
+        {
+            var researchGroupOnList = new ResearchOnListDetailViewModel(rg) { Mode = ResearchOnListDetailViewModel.ResearchMode.ResearchGroup };
+            ResearchEntitiesOnList.Add(researchGroupOnList);
+            researches.ForEach(r =>
+            {
+                if (r.ParentGroupId == rg.Id)
+                {
+                    researchGroupOnList.Children.Add(new(r) { Mode = ResearchOnListDetailViewModel.ResearchMode.Research });
+                }
+            });
+        });
     }
 
     private void GetDbContextInstance() => 
         _dbContext = (Application.Current as App)?._serviceProvider
         .GetService<Realm>()!;
 
-    public void OnFolderCreating()
-    {
-        var newResearchGroup = new ResearchGroup(AddingGroupName, []);
-        var newGroupNode = new ResearchOnListDetailViewModel(newResearchGroup);
+    public void OnResearchSelecting() => 
+        InitializeSelectedResearchInDetailBasedOnId();
 
-        ResearchEntitiesOnList.Add(newGroupNode);
-    }
-
-    public void OnResearchCreating()
+    public void OnSaveChanging()
     {
+        SelectedOnList!.DisplayName = SelectedResearchInDetail!.Subject;
         _dbContext.Write(() =>
         {
             _dbContext
             .Add(SelectedResearchInDetail.ToModel(), true);
         });
+    }
+
+    public void OnFolderCreating()
+    {
+        var newResearchGroup = new ResearchGroup(AddingGroupName, []);
+        var newGroupNode = new ResearchOnListDetailViewModel(newResearchGroup);
+        newGroupNode.Children = new();
+
+        _dbContext.Write(() =>
+        {
+            _dbContext
+            .Add(newResearchGroup, true);
+        });
+        ResearchEntitiesOnList.Add(newGroupNode);
+    }
+
+    public void OnResearchCreating()
+    {
+        SelectedResearchInDetail = new();
+        SelectedResearchInDetail.ParentGroupId = SelectedOnList!.Id;
+        OnSaveChanging();
+        SelectedOnList.Children.Add(new(SelectedResearchInDetail.ToModel()) { Mode = ResearchOnListDetailViewModel.ResearchMode.Research, DisplayName = "", Id = "" });
     }
 
     public async void OnEntityDeleting()
@@ -125,13 +167,56 @@ public class ResearchesViewModel : ObservableObject
                     .ToList();
 
                 _dbContext.Remove(researchGroupToDelete!);
-                researchesToDelete.ForEach(res =>
-                {
-                    _dbContext.Remove(res);
-                });
+                researchesToDelete.ForEach(_dbContext.Remove);
                 ResearchEntitiesOnList.Remove(SelectedOnList);
                 SelectedOnList = null;
             }
+        }
+    }
+
+    public bool CanExecuteOnResearchCreating() =>
+        SelectedOnListCondition() && SelectedOnList!.Mode is ResearchOnListDetailViewModel.ResearchMode.ResearchGroup;
+    public bool CanExecuteOnEntityDeleting() => 
+        SelectedOnListCondition();
+    public bool CanExecuteOnSaveChanging() => 
+        SelectedResearchInDetail is not null;
+    public bool SelectedOnListCondition() => 
+        SelectedOnList != null;
+
+
+    public void InitializeSelectedResearchInDetailBasedOnId()
+    {
+        if (SelectedOnList?.Mode == ResearchOnListDetailViewModel.ResearchMode.Research)
+        {
+            var selectedResearch = _dbContext
+                    .All<Research>()
+                    .Where(x => x.Id == SelectedOnList!.Id)
+                    .FirstOrDefault();
+
+            SelectedResearchInDetail = new(selectedResearch!);
+        }
+        else
+        {
+            if (SelectedResearchInDetail is not null)
+            {
+                SelectedResearchInDetail.Subject = "";
+                SelectedResearchInDetail.Resources = "";
+                SelectedResearchInDetail.Comment = "";
+                SelectedResearchInDetail.Text = "";
+            }
+            SelectedResearchInDetail = null;
+        }
+
+        if (SelectedOnList is null)
+        {
+            if (SelectedResearchInDetail is not null)
+            {
+                SelectedResearchInDetail.Subject = "";
+                SelectedResearchInDetail.Resources = "";
+                SelectedResearchInDetail.Comment = "";
+                SelectedResearchInDetail.Text = "";
+            }
+            SelectedResearchInDetail = null;
         }
     }
 }
