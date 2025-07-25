@@ -136,7 +136,7 @@ public class ResearchesViewModel : ObservableObject
         SelectedResearchInDetail = new();
         SelectedResearchInDetail.ParentGroupId = SelectedOnList!.Id;
         OnSaveChanging();
-        SelectedOnList.Children.Add(new(SelectedResearchInDetail.ToModel()) { Mode = ResearchOnListDetailViewModel.ResearchMode.Research, DisplayName = "", Id = "" });
+        SelectedOnList.Children.Add(new(SelectedResearchInDetail.ToModel()) { Mode = ResearchOnListDetailViewModel.ResearchMode.Research, DisplayName = "خالی", Id = Ulid.NewUlid().ToString() });
     }
 
     public async void OnEntityDeleting()
