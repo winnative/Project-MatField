@@ -234,6 +234,7 @@
                     Grid.Column="2"
                     Width="100"
                     VerticalAlignment="Center"
+                    SelectedIndex="0"
                     SelectedItem="{x:Bind LibraryViewModel.SearchBaseText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <x:String>شماره</x:String>
                     <x:String>نام کتاب</x:String>

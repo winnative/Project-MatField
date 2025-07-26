@@ -60,7 +60,7 @@ namespace Project_MatField
         private void ConfigureServices(IServiceCollection serviceCollection)
         {
             var dbFile = new RealmConfiguration(ConfigurationManager.ConnectionStrings["dbPathD"].ConnectionString);
-            dbFile.SchemaVersion = 2;
+            dbFile.SchemaVersion = (ulong)Convert.ToInt16(ConfigurationManager.AppSettings["realmVersion"]!.ToString());
             serviceCollection.AddSingleton(Realm.GetInstance(dbFile));
             serviceCollection.AddSingleton<MainWindow>();
         }

@@ -30,12 +30,46 @@
             BorderThickness="1"
             CornerRadius="12">
             <Grid.RowDefinitions>
+                <RowDefinition Height="56" />
+                <RowDefinition Height="auto" />
                 <RowDefinition />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="56" />
             </Grid.RowDefinitions>
+            <Grid x:Name="gridSearchBarResearches">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    x:Name="textBoxSearchResearches"
+                    Margin="8"
+                    VerticalAlignment="Center"
+                    PlaceholderText="جستجو کنید..."
+                    Text="{x:Bind ResearchesViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <interactivity:Interaction.Behaviors>
+                        <interactivity:EventTriggerBehavior EventName="TextChanged">
+                            <interactivity:InvokeCommandAction Command="{x:Bind ResearchesViewModel.OnSearchTextChangedCommand}" />
+                        </interactivity:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+                <ComboBox
+                    x:Name="comboBoxSearchFilters"
+                    Grid.Column="1"
+                    Margin="0,8,8,8"
+                    VerticalAlignment="Center"
+                    SelectedIndex="0"
+                    SelectedItem="{x:Bind ResearchesViewModel.SearchFilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <x:String>موضوع</x:String>
+                    <x:String>منابع</x:String>
+                    <x:String>نظر محقق</x:String>
+                    <x:String>متن تحقیق</x:String>
+                </ComboBox>
+            </Grid>
+            <MenuFlyoutSeparator Grid.Row="1" />
             <TreeView
                 x:Name="treeViewResearches"
+                Grid.Row="2"
                 ItemsSource="{x:Bind ResearchesViewModel.ResearchEntitiesOnList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{x:Bind ResearchesViewModel.SelectedOnList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectionMode="Single">
@@ -45,10 +79,10 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            <MenuFlyoutSeparator Grid.Row="1" />
+            <MenuFlyoutSeparator Grid.Row="3" />
             <CommandBar
                 x:Name="commandBarTreeViewResearches"
-                Grid.Row="2"
+                Grid.Row="4"
                 VerticalAlignment="Center"
                 DefaultLabelPosition="Collapsed">
                 <AppBarButton
@@ -109,7 +143,7 @@
                         x:Name="buttonSaveChangesResearches"
                         Grid.Column="1"
                         VerticalAlignment="Bottom"
-                        Command="{x:Bind ResearchesViewModel.OnSaveChangingCommand}">
+                        Command="{x:Bind ResearchesViewModel.OnResearchUpdatingCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <SymbolIcon Symbol="SaveLocal" />
                             <TextBlock VerticalAlignment="Center" Text="ذخیره تغییرات" />
