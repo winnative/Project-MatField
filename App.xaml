@@ -9,6 +9,16 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
+            <Color x:Key="SystemAccentColorDark1">#009F88</Color>
+            <Color x:Key="SystemAccentColorDark2">#008675</Color>
+            <Color x:Key="SystemAccentColorDark3">#006D62</Color>
+            <Color x:Key="SystemAccentColorLight1">#33C7B0</Color>
+            <Color x:Key="SystemAccentColorLight2">#66D6C6</Color>
+            <Color x:Key="SystemAccentColorLight3">#99E5DC</Color>
+            <CornerRadius x:Key="HRCornerRadiusControls">8</CornerRadius>
+            <CornerRadius x:Key="HRCornerRadiusOverlaps">12</CornerRadius>
+            <x:Double x:Key="HRBetweenDialogContentsSpace">12</x:Double>
+            <FontFamily x:Key="MicrosoftSegoeFluentIcons">/Assets/Segoe Fluent Icons.ttf#Segoe Fluent Icons</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

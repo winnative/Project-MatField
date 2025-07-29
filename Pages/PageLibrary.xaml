@@ -28,7 +28,7 @@
             Background="{ThemeResource CardBackgroundFillColorDefault}"
             BorderBrush="{ThemeResource CardStrokeColorDefault}"
             BorderThickness="1"
-            CornerRadius="12">
+            CornerRadius="{ThemeResource HRCornerRadiusOverlaps}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="auto" />
@@ -57,7 +57,10 @@
                 Grid.Row="2"
                 VerticalAlignment="Center"
                 DefaultLabelPosition="Collapsed">
-                <AppBarButton x:Name="appBarButtonGroupsLibraryAdd" Icon="Add">
+                <AppBarButton x:Name="appBarButtonGroupsLibraryAdd" CornerRadius="{ThemeResource HRCornerRadiusControls}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE710;"/>
+                    </AppBarButton.Icon>
                     <AppBarButton.Flyout>
                         <Flyout AllowFocusOnInteraction="True" ShouldConstrainToRootBounds="False">
                             <StackPanel MinWidth="300" Spacing="8">
@@ -68,7 +71,7 @@
                                 <TextBox
                                     x:Name="textBoxAddGroupLibrary"
                                     AllowFocusOnInteraction="True"
-                                    CornerRadius="8"
+                                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                                     Header="نام پوشه را وارد کنید"
                                     Text="{x:Bind LibraryViewModel.AddingGroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <StackPanel
@@ -93,6 +96,7 @@
                                     <FontIcon
                                         FontSize="12"
                                         Foreground="{ThemeResource SystemFillColorCritical}"
+                                        FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}"
                                         Glyph="&#xE946;" />
                                     <TextBlock
                                         Margin="0,-4,0,0"
@@ -104,22 +108,26 @@
                                     x:Name="buttonAddGroupLibrary"
                                     Command="{x:Bind LibraryViewModel.OnAddingGroupCommand}"
                                     Content="ایجاد"
-                                    CornerRadius="8" />
+                                    CornerRadius="{ThemeResource HRCornerRadiusControls}" />
                             </StackPanel>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarButton
                     x:Name="appBarButtonGroupsLibraryDelete"
-                    Command="{x:Bind LibraryViewModel.OnDeletingGroupCommand}"
-                    Icon="Delete" />
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
+                    Command="{x:Bind LibraryViewModel.OnDeletingGroupCommand}" >
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE74D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar>
         </Grid>
         <sizers:GridSplitter
             Grid.Column="1"
             Margin="0,16"
             Canvas.ZIndex="3"
-            CornerRadius="4"
+            CornerRadius="{ThemeResource HRCornerRadiusControls}"
             ResizeBehavior="BasedOnAlignment" />
         <Grid
             x:Name="gridDataGrid"
@@ -127,7 +135,7 @@
             Margin="0,16,16,16"
             BorderBrush="{ThemeResource CardStrokeColorDefault}"
             BorderThickness="1"
-            CornerRadius="12">
+            CornerRadius="{ThemeResource HRCornerRadiusOverlaps}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="56" />
@@ -138,7 +146,7 @@
                 Background="Transparent"
                 CanUserReorderColumns="True"
                 CanUserSortColumns="True"
-                CornerRadius="8"
+                CornerRadius="{ThemeResource HRCornerRadiusControls}"
                 ItemsSource="{x:Bind LibraryViewModel.BookesInDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{x:Bind LibraryViewModel.SelectedBookInDetailViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectionMode="Single"
@@ -219,20 +227,27 @@
                     DefaultLabelPosition="Collapsed">
                     <AppBarButton
                         x:Name="appBarButtonAddRow"
-                        Command="{x:Bind LibraryViewModel.OnAddingBookCommand}"
-                        CornerRadius="8"
-                        Icon="Add" />
+                        CornerRadius="{ThemeResource HRCornerRadiusControls}"
+                        Command="{x:Bind LibraryViewModel.OnAddingBookCommand}">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE710;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                     <AppBarButton
                         x:Name="appBarButtonDeleteRow"
-                        Command="{x:Bind LibraryViewModel.OnDeletingBookCommand}"
-                        CornerRadius="8"
-                        Icon="Delete" />
+                        CornerRadius="{ThemeResource HRCornerRadiusControls}"
+                        Command="{x:Bind LibraryViewModel.OnDeletingBookCommand}">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE74D;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                 </CommandBar>
                 <AppBarSeparator Grid.Column="1" />
                 <ComboBox
                     Name="comboBoxSearchFilterBase"
                     Grid.Column="2"
                     Width="100"
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                     VerticalAlignment="Center"
                     SelectedIndex="0"
                     SelectedItem="{x:Bind LibraryViewModel.SearchBaseText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -254,6 +269,7 @@
                 <TextBox
                     Name="textBoxSearchFilterText"
                     Grid.Column="3"
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                     Width="300"
                     VerticalAlignment="Center"
                     PlaceholderText="جستجو کنید..."

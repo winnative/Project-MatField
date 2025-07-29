@@ -8,5 +8,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1" x:Name="textBlockSettingsTitle" Text="تنظیمات"/>
+        <Grid Grid.Column="1" x:Name="gridSettingsContent" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="48"/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <TextBlock Grid.RowSpan="2" TextWrapping="Wrap" x:Name="textBlockSettingsAbout"><Bold>HR Book</Bold><LineBreak/>version 0.9<LineBreak/>Copyrights (c) 2025 Hassan Kazemi. All rights reserved.</TextBlock>
+    </Grid>
 </Page>

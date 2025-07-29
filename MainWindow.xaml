@@ -40,14 +40,20 @@
                 <NavigationViewItem
                     x:Name="navViewItemLibrary"
                     Content="کتابخانه"
-                    CornerRadius="8"
-                    Icon="Library"
-                    IsSelected="True" />
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
+                    IsSelected="True">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE8F1;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem
                     x:Name="navViewItemResearches"
                     Content="تحقیقات"
-                    CornerRadius="8"
-                    Icon="Document" />
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE8A5;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="frameContent" FlowDirection="RightToLeft" />
         </NavigationView>

@@ -28,7 +28,7 @@
             Background="{ThemeResource CardBackgroundFillColorDefault}"
             BorderBrush="{ThemeResource CardStrokeColorDefault}"
             BorderThickness="1"
-            CornerRadius="12">
+            CornerRadius="{ThemeResource HRCornerRadiusOverlaps}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="56" />
                 <RowDefinition Height="auto" />
@@ -87,11 +87,14 @@
                 DefaultLabelPosition="Collapsed">
                 <AppBarButton
                     x:Name="appBarButtonCreateResearch"
-                    Command="{x:Bind ResearchesViewModel.OnResearchCreatingCommand}"
-                    Icon="Add" />
-                <AppBarButton x:Name="appBarButtonCreateResearchFolder">
+                    Command="{x:Bind ResearchesViewModel.OnResearchCreatingCommand}" >
                     <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xE82E;" />
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE710;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton CornerRadius="{ThemeResource HRCornerRadiusControls}" x:Name="appBarButtonCreateResearchFolder">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE82E;" FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}"/>
                     </AppBarButton.Icon>
                     <AppBarButton.Flyout>
                         <Flyout>
@@ -103,28 +106,32 @@
                                 <TextBox
                                     x:Name="textBoxAddGroupLibrary"
                                     AllowFocusOnInteraction="True"
-                                    CornerRadius="8"
+                                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                                     Header="نام پوشه را وارد کنید"
                                     Text="{x:Bind ResearchesViewModel.AddingGroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button
                                     x:Name="buttonAddGroupResearch"
                                     Command="{x:Bind ResearchesViewModel.OnFolderCreatingCommand}"
                                     Content="ایجاد"
-                                    CornerRadius="8" />
+                                    CornerRadius="{ThemeResource HRCornerRadiusControls}" />
                             </StackPanel>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarButton
                     x:Name="appBarButtonDelete"
-                    Command="{x:Bind ResearchesViewModel.OnEntityDeletingCommand}"
-                    Icon="Delete" />
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
+                    Command="{x:Bind ResearchesViewModel.OnEntityDeletingCommand}" >
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE74D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar>
         </Grid>
         <sizers:GridSplitter
             Grid.Column="1"
             Margin="0,16"
-            CornerRadius="4" />
+            CornerRadius="{ThemeResource HRCornerRadiusControls}" />
         <ScrollViewer
             x:Name="scrollViewerContent"
             Grid.Column="2"
@@ -142,10 +149,11 @@
                     <Button
                         x:Name="buttonSaveChangesResearches"
                         Grid.Column="1"
+                        CornerRadius="{ThemeResource HRCornerRadiusControls}"
                         VerticalAlignment="Bottom"
                         Command="{x:Bind ResearchesViewModel.OnResearchUpdatingCommand}">
                         <StackPanel Orientation="Horizontal" Spacing="4">
-                            <SymbolIcon Symbol="SaveLocal" />
+                            <FontIcon FontSize="14" FontFamily="{ThemeResource MicrosoftSegoeFluentIcons}" Glyph="&#xE78C;" />
                             <TextBlock VerticalAlignment="Center" Text="ذخیره تغییرات" />
                         </StackPanel>
                     </Button>
@@ -153,18 +161,21 @@
                 <TextBox
                     x:Name="textBoxResources"
                     MinHeight="100"
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                     Header="منابع"
                     Text="{x:Bind ResearchesViewModel.SelectedResearchInDetail.Resources, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" />
                 <TextBox
                     x:Name="textBoxComment"
                     MinHeight="100"
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                     Header="نظر محقق"
                     Text="{x:Bind ResearchesViewModel.SelectedResearchInDetail.Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" />
                 <TextBox
                     x:Name="textBoxResearchText"
                     MinHeight="800"
+                    CornerRadius="{ThemeResource HRCornerRadiusControls}"
                     Header="تحقیق"
                     Text="{x:Bind ResearchesViewModel.SelectedResearchInDetail.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" />

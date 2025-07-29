@@ -15,6 +15,7 @@
 	<WindowsAppSdkSelfContained>true</WindowsAppSdkSelfContained>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Segoe Fluent Icons.ttf" />
     <None Remove="Pages\PageLibrary.xaml" />
     <None Remove="Pages\PageResearches.xaml" />
     <None Remove="Pages\PageSettings.xaml" />
@@ -49,6 +50,11 @@
     <PackageReference Include="Ulid" Version="1.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\Segoe Fluent Icons.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\PageSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -62,9 +68,6 @@
     <Page Update="Pages\PageLibrary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
   </ItemGroup>
 
   <!--
